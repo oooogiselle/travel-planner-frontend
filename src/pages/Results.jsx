@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DollarSign, Clock, Download, Share2 } from 'lucide-react';
+import { DollarSign, Clock, Download, Share2, Check, AlertCircle } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import LoadingSpinner from '../components/LoadingSpinner';
 import DraftCard from '../components/DraftCard';
@@ -101,13 +101,16 @@ export default function Results() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-lg max-w-md">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">Oops!</h2>
+      <div className="min-h-screen bg-stone-50 flex items-center justify-center p-4">
+        <div className="bg-white p-8 rounded-lg border-2 border-red-200 max-w-md w-full">
+          <div className="flex items-center gap-3 mb-4">
+            <AlertCircle className="w-6 h-6 text-red-600" />
+            <h2 className="text-2xl font-medium text-gray-900">Something went wrong</h2>
+          </div>
           <p className="text-gray-700 mb-6">{error}</p>
           <button
             onClick={() => navigate('/')}
-            className="btn-primary w-full"
+            className="w-full px-6 py-3 bg-white border-2 border-purple-600 text-purple-600 rounded-lg hover:bg-purple-600 hover:text-white transition-colors font-medium"
           >
             Try Again
           </button>
@@ -117,7 +120,7 @@ export default function Results() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-stone-50">
       <Navbar
         title={data?.city}
         subtitle={`${data?.totalDays} days • $${data?.budgetPerPerson}/person • ${data?.groupSize} travelers`}
@@ -126,13 +129,13 @@ export default function Results() {
 
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* Instructions */}
-        <div className="mb-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Choose Your Adventure 🎯
+        <div className="mb-8 bg-white border border-purple-200 rounded-lg p-6">
+          <h2 className="text-2xl font-medium text-gray-900 mb-2">
+            Choose Your Adventure
           </h2>
-          <p className="text-gray-700">
+          <p className="text-gray-600">
             We've created 3 different itinerary styles for you. Pick your favorite days from each 
-            to create your perfect trip! Each day includes morning activities, afternoon exploration, 
+            to create your perfect trip. Each day includes morning activities, afternoon exploration, 
             and evening dining.
           </p>
         </div>
@@ -149,89 +152,118 @@ export default function Results() {
           ))}
         </div>
 
-        {/* Final Itinerary Summary */}
+        {/* COMPACT Summary Card */}
         {Object.keys(selectedDays).length > 0 && (
-          <div className="bg-white rounded-lg shadow-lg p-6 sticky bottom-4 border-2 border-blue-200">
+          <div className="bg-white rounded-lg border-2 border-purple-200 p-4 sticky bottom-4">
+            {/* Compact Header */}
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold text-gray-900">Your Custom Itinerary</h2>
+              <div>
+                <h2 className="text-xl font-medium text-gray-900">Your Itinerary</h2>
+                <p className="text-sm text-gray-600">
+                  {Object.keys(selectedDays).length} of {data.totalDays} days • ${totalSelectedCost}
+                </p>
+              </div>
               {isComplete && (
                 <div className="flex gap-2">
                   <button
                     onClick={handleExport}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all"
+                    className="p-2 bg-white border border-stone-200 rounded-lg hover:border-purple-600 transition-colors"
+                    title="Export"
                   >
-                    <Download className="w-4 h-4" />
-                    Export
+                    <Download className="w-4 h-4 text-gray-700" />
                   </button>
                   <button
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-all"
+                    onClick={() => navigate('/flights', { 
+                      state: { 
+                        itinerary: data,
+                        selectedItinerary: { 
+                          days: getFinalItinerary(), 
+                          totalCost: totalSelectedCost 
+                        }
+                      } 
+                    })}
+                    className="px-4 py-2 bg-white border-2 border-purple-600 text-purple-600 rounded-lg hover:bg-purple-600 hover:text-white transition-colors font-medium text-sm"
                   >
-                    <Share2 className="w-4 h-4" />
-                    Share
+                    Add Flights
+                  </button>
+                  <button
+                    className="p-2 bg-white border border-stone-200 rounded-lg hover:border-purple-600 transition-colors"
+                    title="Share"
+                  >
+                    <Share2 className="w-4 h-4 text-gray-700" />
                   </button>
                 </div>
               )}
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-              <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-                <div className="flex items-center text-green-700 mb-1">
-                  <DollarSign className="w-5 h-5 mr-1" />
-                  <span className="font-semibold">Total Cost</span>
-                </div>
-                <p className="text-2xl font-bold text-green-900">${totalSelectedCost}</p>
-                <p className="text-sm text-green-600">${Math.round(totalSelectedCost / data.groupSize)} per person</p>
+            {/* Compact Stats - Single Row */}
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              <div className="text-center p-3 bg-white rounded-lg border border-stone-200">
+                <p className="text-2xl font-medium text-gray-900">${totalSelectedCost}</p>
+                <p className="text-xs text-gray-500">Total</p>
               </div>
-
-              <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                <div className="flex items-center text-blue-700 mb-1">
-                  <Clock className="w-5 h-5 mr-1" />
-                  <span className="font-semibold">Progress</span>
-                </div>
-                <p className="text-2xl font-bold text-blue-900">
-                  {Object.keys(selectedDays).length} / {data.totalDays}
+              
+              <div className="text-center p-3 bg-white rounded-lg border border-stone-200">
+                <p className="text-2xl font-medium text-gray-900">
+                  {Object.keys(selectedDays).length}/{data.totalDays}
                 </p>
-                <p className="text-sm text-blue-600">days selected</p>
+                <p className="text-xs text-gray-500">Selected</p>
               </div>
-
-              <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
-                <div className="flex items-center text-purple-700 mb-1">
-                  <span className="font-semibold">Budget Status</span>
-                </div>
-                <p className="text-2xl font-bold text-purple-900">
-                  {totalSelectedCost <= data.budgetPerPerson ? '✓' : '!'} 
-                  {totalSelectedCost <= data.budgetPerPerson ? ' On Track' : ' Over'}
+              
+              <div className={`text-center p-3 rounded-lg border ${
+                totalSelectedCost <= data.budgetPerPerson 
+                  ? 'border-purple-600 bg-purple-50' 
+                  : 'border-red-300 bg-red-50'
+              }`}>
+                <p className={`text-2xl font-medium ${
+                  totalSelectedCost <= data.budgetPerPerson ? 'text-purple-600' : 'text-red-600'
+                }`}>
+                  {totalSelectedCost <= data.budgetPerPerson ? (
+                    <Check className="w-6 h-6 mx-auto" />
+                  ) : (
+                    <AlertCircle className="w-6 h-6 mx-auto" />
+                  )}
                 </p>
-                <p className="text-sm text-purple-600">
-                  {totalSelectedCost <= data.budgetPerPerson 
-                    ? `$${data.budgetPerPerson - totalSelectedCost} remaining`
-                    : `$${totalSelectedCost - data.budgetPerPerson} over budget`
-                  }
+                <p className="text-xs text-gray-500">
+                  {totalSelectedCost <= data.budgetPerPerson ? 'On Track' : 'Over'}
                 </p>
               </div>
             </div>
 
-            {/* Selected Days Timeline */}
+            {/* Collapsible Day List */}
             {getFinalItinerary().length > 0 && (
-              <div className="space-y-3">
-                {getFinalItinerary().map((day, idx) => (
-                  <div key={idx} className="border-l-4 border-blue-500 pl-4 py-2 bg-blue-50 rounded-r">
-                    <h4 className="font-semibold text-gray-900 mb-1">{day.title}</h4>
-                    <p className="text-sm text-gray-600">
-                      {day.blocks.map(b => b.item.name).join(' → ')}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">${day.estCost}</p>
+              <details className="group">
+                <summary className="cursor-pointer list-none">
+                  <div className="flex items-center justify-between p-2 hover:bg-stone-50 rounded transition-colors">
+                    <span className="text-sm font-medium text-gray-700">
+                      View Selected Days ({getFinalItinerary().length})
+                    </span>
+                    <svg 
+                      className="w-4 h-4 text-gray-500 transition-transform group-open:rotate-180" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
                   </div>
-                ))}
-              </div>
+                </summary>
+                <div className="mt-2 space-y-2 max-h-48 overflow-y-auto">
+                  {getFinalItinerary().map((day, idx) => (
+                    <div key={idx} className="border-l-2 border-purple-600 pl-3 py-1 text-sm">
+                      <p className="font-medium text-gray-900">{day.title}</p>
+                      <p className="text-xs text-gray-500">${day.estCost}</p>
+                    </div>
+                  ))}
+                </div>
+              </details>
             )}
 
-            {/* Complete message */}
+            {/* Complete message - Compact */}
             {isComplete && (
-              <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                <p className="text-green-800 font-semibold text-center">
-                  🎉 Your itinerary is complete! Ready to start your adventure?
+              <div className="mt-3 p-2 bg-purple-50 border border-purple-600 rounded text-center">
+                <p className="text-sm text-purple-900 font-medium">
+                  Ready to start your adventure
                 </p>
               </div>
             )}

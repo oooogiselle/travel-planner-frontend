@@ -6,6 +6,8 @@ import './index.css'
 // Pages
 import Home from './pages/Home'
 import Results from './pages/Results'
+import Flights from './pages/Flights'
+import Hotels from './pages/Hotels'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -13,6 +15,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/results" element={<Results />} />
+        <Route path="/flights" element={<Flights />} />
+        <Route path="/hotels" element={<Hotels />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
