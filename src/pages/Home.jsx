@@ -213,11 +213,11 @@ export default function Home() {
     if (!data.travelers || data.travelers.length === 0) {
       setTimeout(() => {
         addMessage("How many people are traveling? 👥", true, 'options', [
-          { label: '✈️ Just me', value: 1 },
-          { label: '👫 2 people', value: 2 },
-          { label: '👨‍👩‍👦 3 people', value: 3 },
-          { label: '👨‍👩‍👧‍👦 4 people', value: 4 },
-          { label: '👥 5+ people', value: 5 },
+          { label: 'Just me', value: 1 },
+          { label: '2 people', value: 2 },
+          { label: '3 people', value: 3 },
+          { label: '4 people', value: 4 },
+          { label: '5+ people', value: 5 },
         ]);
         setIsThinking(false);
       }, 300);
@@ -228,10 +228,10 @@ export default function Home() {
     if (!data.budgetPerPerson || data.budgetPerPerson <= 500) {
       setTimeout(() => {
         addMessage("What's your budget per person? 💰", true, 'options', [
-          { label: '💵 Budget ($500-1000)', value: 750 },
-          { label: '💳 Moderate ($1000-2000)', value: 1500 },
-          { label: '💎 Comfortable ($2000-3000)', value: 2500 },
-          { label: '✨ Luxury ($3000+)', value: 4000 },
+          { label: 'Budget ($500-1000)', value: 750 },
+          { label: 'Moderate ($1000-2000)', value: 1500 },
+          { label: 'Comfortable ($2000-3000)', value: 2500 },
+          { label: 'Luxury ($3000+)', value: 4000 },
         ]);
         setIsThinking(false);
       }, 300);
@@ -248,7 +248,7 @@ export default function Home() {
     }
 
     // 6. All questions answered - show summary and form
-    console.log('✅ All questions answered!');
+    console.log('All questions answered!');
     finalizeTripSummary(data);
   };
 
@@ -262,11 +262,11 @@ export default function Home() {
     
     setTimeout(() => {
       addMessage(
-        `Awesome! ✨ Here's your complete trip:\n\n` +
-        `📍 ${data.city}\n` +
-        `📅 ${new Date(data.checkIn).toLocaleDateString()} - ${new Date(data.checkOut).toLocaleDateString()} (${nights} nights)\n` +
-        `👥 ${data.travelers.length} ${data.travelers.length === 1 ? 'person' : 'people'}\n` +
-        `💰 $${data.budgetPerPerson}/person\n` +
+        `Awesome! Here's your complete trip:\n\n` +
+        `- ${data.city}\n` +
+        `- ${new Date(data.checkIn).toLocaleDateString()} - ${new Date(data.checkOut).toLocaleDateString()} (${nights} nights)\n` +
+        `- ${data.travelers.length} ${data.travelers.length === 1 ? 'person' : 'people'}\n` +
+        `= $${data.budgetPerPerson}/person\n` +
         `${data.preferences.length > 0 ? `🎯 ${data.preferences.join(', ')}\n` : ''}\n` +
         `Ready to add traveler details!`,
         true
@@ -323,7 +323,7 @@ export default function Home() {
   const handleLogout = async () => {
     const result = await logOut();
     if (result.success) {
-      console.log('✅ Logged out successfully');
+      console.log('Logged out successfully');
       // Stay on home page
     }
   };
@@ -387,7 +387,7 @@ export default function Home() {
       // Destination clear?
       if (parsed.destination) {
         setTimeout(() => {
-          addMessage(`Perfect! Let's plan your trip to ${parsed.destination}! 🎉`, true);
+          addMessage(`Perfect! Let's plan your trip to ${parsed.destination}!`, true);
           askNextQuestionInOrder(initialData);
         }, 800);
         return;
@@ -395,7 +395,7 @@ export default function Home() {
 
       // No destination
       setTimeout(() => {
-        addMessage("I'd love to help! Where would you like to go? 🌍", true);
+        addMessage("I'd love to help! Where would you like to go?", true);
         setIsThinking(false);
       }, 800);
 
