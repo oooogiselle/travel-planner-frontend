@@ -42,7 +42,8 @@ export default function AirportAutocomplete({
 
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:3001/api/flights/airports', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await axios.get(`${API_URL}/api/flights/airports`, {
         params: {
           keyword,
           subType: 'AIRPORT,CITY'
