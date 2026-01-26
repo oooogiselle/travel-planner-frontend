@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapPin, Calendar, Users, ChevronDown, Sparkles, Loader, Send } from 'lucide-react';
 import { PREFERENCES, TRAVEL_STYLES } from '../utils/constants';
-import AirportAutocomplete from '../components/AirportAutoComplete';
+import AirportAutocomplete from '../components/AirportAutocomplete';
 import { useAuth } from '../context/AuthContext';
 import { logOut } from '../firebase/auth';
 import axios from 'axios';
