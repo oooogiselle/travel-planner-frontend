@@ -1,266 +1,509 @@
-# Travel Planner Frontend 🌍✈️
+# Travel Planner Application
 
-React + Vite frontend for the Travel Planner application.
+A full-stack travel planning application with AI-powered itinerary generation, flight and hotel search, and trip management features.
+
+## Architecture
+
+### Frontend
+- **Framework:** React with Vite
+- **Routing:** React Router
+- **Styling:** Tailwind CSS
+- **State Management:** React Hooks (useState, useEffect, useContext)
+- **Authentication:** Firebase Authentication
+- **Database:** Firebase Firestore
+- **HTTP Client:** Axios
+- **Deployment:** Render
+
+### Backend
+- **Framework:** Express.js
+- **AI:** Google Gemini (gemini-2.5-flash)
+- **APIs:** Amadeus (Flights), Foursquare (Hotels), OpenCage (Geocoding)
+- **Caching:** node-cache
+- **CORS:** cors middleware
+- **Deployment:** Render
 
 ## Features
 
-- 🎨 Beautiful, responsive UI with Tailwind CSS
-- 🔀 Mix-and-match itinerary builder
-- 📱 Mobile-friendly design
-- ⚡ Fast development with Vite HMR
-- 🎯 Smart form validation
-- 💾 Export itineraries
+### 1. AI-Powered Trip Planning
+- Natural language trip query parsing
+- Destination, dates, travelers, and budget extraction
+- Intelligent defaults for missing information
 
-## Tech Stack
+### 2. Flight Search
+- Airport search with autocomplete
+- Multi-city and date range support
+- Real-time flight availability through Amadeus API
+- Price comparison and filtering
 
-- **React 18** - UI library
-- **Vite** - Build tool & dev server
-- **React Router** - Client-side routing
-- **Tailwind CSS** - Utility-first CSS
-- **Axios** - HTTP client
-- **Lucide React** - Beautiful icons
-- **Mapbox GL** - Maps & geocoding
+### 3. Hotel Search
+- Location-based hotel search
+- Filtering by price, rating, amenities
+- Integration with Foursquare Places API
+- Hotel details with photos and reviews
+
+### 4. AI Itinerary Generation
+- Three distinct itinerary styles: Cultural, Modern, Relaxed
+- Conversational refinement through chat interface
+- Custom itinerary generation based on preferences
+- Day-by-day activity planning with times and types
+
+### 5. Trip Management
+- Save complete trips to Firebase Firestore
+- View all saved trips in dashboard
+- Edit itineraries with inline editing
+- Add/remove/modify activities per day
+- Delete trips with confirmation
+
+### 6. User Authentication
+- Email/password authentication via Firebase
+- Protected routes requiring login
+- User-specific trip data
 
 ## Project Structure
 
+### Frontend Structure
 ```
-src/
-├── components/          # Reusable components
-│   ├── Navbar.jsx      # Navigation bar
-│   ├── LoadingSpinner.jsx
-│   ├── DayCard.jsx     # Individual day display
-│   └── DraftCard.jsx   # Full draft display
-├── pages/              # Route pages
-│   ├── Home.jsx        # Search form
-│   └── Results.jsx     # Itinerary results
-├── utils/              # Utilities
-│   ├── api.js          # API client
-│   └── constants.js    # App constants
-├── main.jsx            # App entry point
-└── index.css           # Global styles
+travel-planner-frontend/
+├── src/
+│   ├── components/
+│   │   └── Navbar.jsx           # Navigation component
+│   ├── config/
+│   │   └── api.js               # API configuration
+│   ├── context/
+│   │   └── AuthContext.jsx      # Authentication context
+│   ├── firebase/
+│   │   ├── config.js            # Firebase configuration
+│   │   └── firestore.js         # Firestore operations
+│   ├── pages/
+│   │   ├── Home.jsx             # Landing page with AI trip parser
+│   │   ├── Login.jsx            # Login page
+│   │   ├── Signup.jsx           # Signup page
+│   │   ├── Dashboard.jsx        # Saved trips dashboard
+│   │   ├── Flights.jsx          # Flight search page
+│   │   ├── Hotels.jsx           # Hotel search page
+│   │   ├── Activities.jsx       # AI itinerary generation
+│   │   ├── Summary.jsx          # Trip summary and save
+│   │   └── TripDetails.jsx      # View/edit saved trip
+│   ├── main.jsx                 # App entry point with routing
+│   └── index.css                # Global styles
+├── .env                         # Environment variables
+└── package.json
 ```
 
-## Quick Start
+### Backend Structure
+```
+travel-planner-backend/
+├── routes/
+│   ├── activities.js            # Itinerary generation & chat
+│   ├── parse-trip.js            # AI trip query parser
+│   ├── flights.js               # Flight search via Amadeus
+│   ├── hotels.js                # Hotel search via Foursquare
+│   ├── geocode.js               # Geocoding via OpenCage
+│   ├── places.js                # Places search
+│   └── itinerary.js             # Itinerary helpers
+├── middleware/
+│   ├── errorHandler.js          # Global error handler
+│   └── requestLogger.js         # Request logging
+├── server.js                    # Express server setup
+├── .env                         # Environment variables
+└── package.json
+```
+
+## Installation
 
 ### Prerequisites
-
-- Node.js 18+
+- Node.js (v16 or higher)
 - npm or yarn
-- Backend server running on port 3001
+- Firebase account
+- Google Gemini API key
+- Amadeus API credentials
+- Foursquare API key
 
-### Installation
+### Frontend Setup
 
-1. **Install dependencies**
+1. Clone the repository
+```bash
+git clone <repository-url>
+cd travel-planner-frontend
+```
+
+2. Install dependencies
 ```bash
 npm install
 ```
 
-2. **Configure environment (optional)**
+3. Create `.env` file
 ```bash
-cp .env.example .env
-# Edit .env if needed
+VITE_API_URL=https://your-backend-url.onrender.com
+
+# Firebase configuration
+VITE_FIREBASE_API_KEY=your-api-key
+VITE_FIREBASE_AUTH_DOMAIN=your-auth-domain
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-storage-bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+VITE_FIREBASE_APP_ID=your-app-id
 ```
 
-3. **Start development server**
+4. Start development server
 ```bash
 npm run dev
 ```
 
-4. **Open browser**
-```
-http://localhost:3000
-```
-
-## Available Scripts
-
-- `npm run dev` - Start development server with HMR
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-
-## Component Overview
-
-### Pages
-
-**Home** (`src/pages/Home.jsx`)
-- Search form with city, dates, budget, group size
-- Travel style slider (Frugal ↔ Splurge)
-- Interest preferences (foodie, museums, etc.)
-- Form validation and submission
-
-**Results** (`src/pages/Results.jsx`)
-- Displays 3 generated itinerary drafts
-- Mix-and-match day selection
-- Real-time cost tracking
-- Export functionality
-- Budget status indicator
-
-### Components
-
-**Navbar** (`src/components/Navbar.jsx`)
-- App navigation with back button
-- Title and subtitle display
-- Sticky header
-
-**LoadingSpinner** (`src/components/LoadingSpinner.jsx`)
-- Loading state with animation
-- Customizable message
-
-**DayCard** (`src/components/DayCard.jsx`)
-- Individual day itinerary display
-- Time-of-day icons (morning/afternoon/evening)
-- Activity list with descriptions
-- Selection button
-
-**DraftCard** (`src/components/DraftCard.jsx`)
-- Full draft container
-- Strategy header with gradient
-- Cost and duration summary
-- Multiple DayCards
-
-### Utils
-
-**api.js** (`src/utils/api.js`)
-- Axios instance configuration
-- API endpoint functions:
-  - `geocodeCity(city)` - Convert city to coordinates
-  - `generateItinerary(params)` - Generate full itinerary
-  - `getActivities(lat, lng)` - Fetch activities
-  - `getPlaces(lat, lng, type)` - Fetch restaurants/POIs
-  - `getRoute(coords)` - Calculate walking routes
-
-**constants.js** (`src/utils/constants.js`)
-- Preference options
-- Travel styles
-- Budget ranges
-- Time of day constants
-
-## API Integration
-
-The frontend communicates with the backend through these endpoints:
-
-```javascript
-GET  /api/geocode?city=Paris
-POST /api/itinerary/generate
-GET  /api/activities?lat=48.8566&lng=2.3522
-GET  /api/places?lat=48.8566&lng=2.3522&type=food
-GET  /api/route?coords=2.3522,48.8566;2.2945,48.8584
-```
-
-## Styling
-
-The app uses Tailwind CSS with custom utility classes:
-
-- `.btn-primary` - Primary action button with gradient
-- `.btn-secondary` - Secondary button
-- `.card` - Standard card container
-- `.input-field` - Form input styling
-
-Custom theme colors:
-- Primary: Blue (#3B82F6)
-- Secondary: Purple (#8B5CF6)
-
-## State Management
-
-Uses React hooks for state:
-- `useState` - Component state
-- `useEffect` - Side effects (API calls)
-- `useNavigate` - Programmatic navigation
-- `sessionStorage` - Persist search params between pages
-
-## Deployment
-
-### Build for Production
-
+5. Build for production
 ```bash
 npm run build
 ```
 
-This creates an optimized production build in `dist/`.
+### Backend Setup
 
-### Deploy to Vercel
-
-1. Push to GitHub
-2. Import project in Vercel
-3. Set environment variables (if needed)
-4. Deploy
-
-### Deploy to Netlify
-
-1. Run `npm run build`
-2. Drag `dist/` folder to Netlify
-3. Configure redirects for SPA routing
-
-Add `_redirects` file in `public/`:
+1. Navigate to backend directory
+```bash
+cd travel-planner-backend
 ```
-/*  /index.html  200
+
+2. Install dependencies
+```bash
+npm install
 ```
+
+3. Create `.env` file
+```bash
+PORT=3001
+NODE_ENV=production
+
+# CORS
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173,https://your-frontend-url.onrender.com
+
+# AI
+GOOGLE_GEMINI_API_KEY=your-gemini-api-key
+
+# Flight API (Amadeus)
+AMADEUS_API_KEY=your-amadeus-key
+AMADEUS_API_SECRET=your-amadeus-secret
+
+# Hotel API (Foursquare)
+FOURSQUARE_API_KEY=your-foursquare-key
+
+# Geocoding
+OPENCAGE_API_KEY=your-opencage-key
+```
+
+4. Start development server
+```bash
+npm run dev
+```
+
+5. Start production server
+```bash
+npm start
+```
+
+## Deployment
+
+### Frontend Deployment (Render)
+
+1. Create new Web Service on Render
+2. Connect GitHub repository
+3. Configure:
+   - Build Command: `npm install && npm run build`
+   - Start Command: `npm run preview`
+   - Environment Variables: Add all VITE_ variables
+
+### Backend Deployment (Render)
+
+1. Create new Web Service on Render
+2. Connect GitHub repository
+3. Configure:
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+   - Environment Variables: Add all backend variables including ALLOWED_ORIGINS
 
 ## Environment Variables
 
-- `VITE_API_URL` - Backend API URL (default: `/api` for proxy)
+### Frontend Required Variables
+| Variable | Description | Example |
+|----------|-------------|---------|
+| VITE_API_URL | Backend API URL | `https://api.example.com` |
+| VITE_FIREBASE_API_KEY | Firebase API key | `AIza...` |
+| VITE_FIREBASE_AUTH_DOMAIN | Firebase auth domain | `app.firebaseapp.com` |
+| VITE_FIREBASE_PROJECT_ID | Firebase project ID | `my-project` |
+| VITE_FIREBASE_STORAGE_BUCKET | Firebase storage bucket | `my-project.appspot.com` |
+| VITE_FIREBASE_MESSAGING_SENDER_ID | Firebase messaging sender ID | `123456789` |
+| VITE_FIREBASE_APP_ID | Firebase app ID | `1:123:web:abc` |
 
-In production, set this to your backend URL:
+### Backend Required Variables
+| Variable | Description | Example |
+|----------|-------------|---------|
+| PORT | Server port | `3001` |
+| ALLOWED_ORIGINS | Allowed frontend URLs (comma-separated) | `https://app.com,http://localhost:5173` |
+| GOOGLE_GEMINI_API_KEY | Google Gemini API key | `AIza...` |
+| AMADEUS_API_KEY | Amadeus API key | `abc123...` |
+| AMADEUS_API_SECRET | Amadeus API secret | `xyz789...` |
+| FOURSQUARE_API_KEY | Foursquare API key | `fsq3...` |
+| OPENCAGE_API_KEY | OpenCage API key | `abc123...` |
+
+## API Endpoints
+
+### AI Endpoints
+- `POST /api/ai/parse-trip` - Parse natural language trip query
+
+### Activities Endpoints
+- `POST /api/activities/generate-itineraries` - Generate 3 itinerary options
+- `POST /api/activities/chat` - Conversational itinerary refinement
+
+### Flight Endpoints
+- `GET /api/flights/search` - Search for flights
+- `GET /api/flights/airports` - Search airports by keyword
+
+### Hotel Endpoints
+- `GET /api/hotels/search` - Search hotels by location
+- `GET /api/hotels/search-by-location` - Search hotels by coordinates
+- `GET /api/hotels/:hotelId` - Get hotel details
+
+### Utility Endpoints
+- `GET /api/health` - Health check
+- `GET /api/geocode` - Geocode city names
+- `GET /api/cache/clear` - Clear cache (debug)
+- `GET /api/cache/stats` - View cache statistics (debug)
+
+## Firebase Firestore Schema
+
+### Trips Collection
+```javascript
+{
+  // Trip metadata
+  ownerId: string,              // User ID who created trip
+  tripName: string,             // Auto-generated trip name
+  destination: string,          // City name
+  checkIn: string,              // ISO date string
+  checkOut: string,             // ISO date string
+  
+  // Travelers
+  travelers: [
+    {
+      name: string,
+      age: number,
+      passportNumber: string
+    }
+  ],
+  
+  // Budget
+  budgetPerPerson: number,
+  
+  // Preferences
+  style: string,                // 'budget' | 'balanced' | 'luxury'
+  preferences: string[],        // ['cultural', 'food', etc.]
+  
+  // Selected options
+  selectedOutboundFlight: {
+    airline: string,
+    flightNumber: string,
+    departure: {
+      airport: string,
+      time: string
+    },
+    arrival: {
+      airport: string,
+      time: string
+    },
+    duration: string,
+    price: number,
+    stops: number
+  },
+  
+  selectedReturnFlight: {...},  // Same structure as outbound
+  
+  selectedHotel: {
+    id: string,
+    name: string,
+    location: {
+      address: string,
+      latitude: number,
+      longitude: number
+    },
+    rating: number,
+    reviewCount: number,
+    pricePerNight: number,
+    photos: string[],
+    amenities: string[]
+  },
+  
+  // AI-generated itinerary
+  itinerary: {
+    title: string,
+    days: [
+      {
+        day: number,
+        activities: [
+          {
+            time: string,        // '9:00 AM'
+            name: string,
+            type: string         // 'attraction' | 'food' | 'cultural' | etc.
+          }
+        ]
+      }
+    ]
+  },
+  
+  // Costs
+  totalCost: number,
+  totalFlightCost: number,
+  totalHotelCost: number,
+  
+  // Sharing (future feature)
+  sharedWith: string[],         // User IDs
+  isPublic: boolean,
+  
+  // Status
+  status: string,               // 'planning' | 'booked' | 'completed'
+  
+  // Timestamps
+  createdAt: Timestamp,
+  updatedAt: Timestamp
+}
 ```
-VITE_API_URL=https://your-backend.com/api
+
+## Key Features Implementation
+
+### 1. Trip Saving Flow
+1. User plans trip through AI conversation
+2. Selects flights on Flights page
+3. Selects hotel on Hotels page
+4. AI generates itinerary on Activities page
+5. Reviews everything on Summary page
+6. Clicks "Save Trip" - saves to Firestore
+7. Redirected to Dashboard showing all saved trips
+
+### 2. Trip Editing Flow
+1. User clicks "View & Edit" on Dashboard
+2. Opens TripDetails page with full trip info
+3. Can edit itinerary inline:
+   - Hover over activity to see Edit/Delete buttons
+   - Click Edit to modify time, name, or type
+   - Click Add Activity to insert new activities
+   - All changes saved when "Save Changes" clicked
+
+### 3. AI Itinerary Generation
+1. Backend prompts Gemini with trip context
+2. Gemini returns 3 distinct itineraries (Cultural, Modern, Relaxed)
+3. User can chat to refine: "make it more food focused"
+4. Backend prompts Gemini to generate custom itinerary as JSON
+5. Frontend parses JSON and shows "Use This Itinerary" button
+6. User confirms and continues to Summary
+
+## Common Issues and Solutions
+
+### Issue: CORS Errors
+**Solution:** Add frontend URL to `ALLOWED_ORIGINS` in backend environment variables
+
+### Issue: API calls going to localhost in production
+**Solution:** Ensure `VITE_API_URL` is set in frontend deployment environment variables
+
+### Issue: Firestore index errors
+**Solution:** Click the link in the error message to create required index, or sort in JavaScript instead
+
+### Issue: Old trips missing flight/hotel/itinerary data
+**Solution:** These trips were saved before the feature was added. Create new trips to get full data.
+
+### Issue: "Use This Itinerary" button not appearing
+**Solution:** Backend must return `generatedItinerary` in `/api/activities/chat` response
+
+### Issue: Double slash in API URLs
+**Solution:** Remove trailing slash from `VITE_API_URL` in .env file
+
+## Development Workflow
+
+### Local Development
+1. Start backend: `cd travel-planner-backend && npm run dev`
+2. Start frontend: `cd travel-planner-frontend && npm run dev`
+3. Backend runs on http://localhost:3001
+4. Frontend runs on http://localhost:5173
+
+### Testing Production Build Locally
+```bash
+# Frontend
+npm run build
+npm run preview
+
+# Backend
+NODE_ENV=production npm start
 ```
 
-## Browser Support
+## Technology Stack
 
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+### Frontend
+- React 18
+- React Router 6
+- Tailwind CSS 3
+- Vite 5
+- Axios
+- Lucide React (icons)
+- Firebase SDK
 
-## Development Tips
+### Backend
+- Express 4
+- Google Generative AI (Gemini)
+- Amadeus SDK
+- Axios
+- CORS
+- Node Cache
+- dotenv
 
-1. **Hot Module Replacement**: Changes auto-reload in dev
-2. **React DevTools**: Install browser extension for debugging
-3. **Network Tab**: Monitor API calls in browser DevTools
-4. **Component Props**: Use React DevTools to inspect props
+## File Updates Reference
 
-## Troubleshooting
+### Files Created/Updated in This Session
 
-**"Cannot connect to backend"**
-- Ensure backend is running on port 3001
-- Check Vite proxy configuration
-- Verify API_URL in .env
+**Frontend:**
+- `src/config/api.js` - Central API configuration
+- `src/pages/Activities.jsx` - Added generatedItinerary support, fixed banner layout
+- `src/pages/TripDetails.jsx` - View/edit saved trips
+- `src/pages/Dashboard.jsx` - View all saved trips
+- `src/pages/Summary.jsx` - Save trips to Firebase
+- `src/firebase/firestore.js` - Firestore operations (save, get, update, delete trips)
+- `src/main.jsx` - Added TripDetails route
 
-**"Build fails"**
-- Delete `node_modules` and reinstall
-- Clear Vite cache: `rm -rf node_modules/.vite`
-- Check for TypeScript errors
+**Backend:**
+- `routes/activities.js` - Updated chat function to return generatedItinerary
+- `routes/parse-trip.js` - AI-powered natural language trip parser
+- `server.js` - Added parse-trip route, configured CORS
 
-**"Styles not loading"**
-- Ensure Tailwind directives in index.css
-- Check PostCSS configuration
-- Rebuild CSS: `npm run build`
+**Documentation:**
+- Complete guides for all features
+- Troubleshooting documentation
+- Setup instructions
 
 ## Future Enhancements
 
-- [ ] Interactive map view with Mapbox
-- [ ] Save itineraries to local storage
-- [ ] Share itineraries via link
-- [ ] Print-friendly itinerary view
-- [ ] Dark mode support
-- [ ] Mobile app (React Native)
-- [ ] Offline support (PWA)
+### Planned Features
+- Share trips with friends
+- Collaborative trip planning
+- Trip status tracking (planning, booked, completed)
+- Add notes to activities
+- Upload photos to trips
+- Export trips to PDF
+- Budget breakdown by category
+- Weather information integration
+- Currency conversion
+- Multi-language support
 
-## Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
+### Technical Improvements
+- Implement caching for Firebase reads
+- Add pagination to Dashboard
+- Optimize bundle size
+- Add service worker for offline support
+- Implement optimistic UI updates
+- Add comprehensive error boundaries
+- Implement retry logic for failed API calls
 
 ## License
 
-MIT
+MIT License
 
-## Credits
+## Support
 
-Built with ❤️ using:
-- React
-- Vite
-- Tailwind CSS
-- Lucide Icons
+For issues or questions, please open an issue on GitHub.
+
+## Contributors
+
+Giselle
