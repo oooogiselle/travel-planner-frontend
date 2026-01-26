@@ -74,7 +74,8 @@ export default function Home() {
 
     try {
       // Send message + current context to AI
-      const response = await axios.post('http://localhost:3001/api/ai/parse-trip', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await axios.post(`${API_URL}/api/ai/parse-trip`, {
         query: input,
         context: {
           city: formData.city,
@@ -334,7 +335,8 @@ export default function Home() {
     setParsing(true);
     
     try {
-      const response = await axios.post('http://localhost:3001/api/ai/parse-trip', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await axios.post(`${API_URL}/api/ai/parse-trip`, {
         query: naturalQuery
       });
 

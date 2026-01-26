@@ -44,7 +44,8 @@ export default function Activities() {
 
     try {
       // Call backend to generate itineraries
-      const response = await axios.post('/api/activities/generate-itineraries', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await axios.post(`${API_URL}/api/activities/generate-itineraries`, {
         destination: tripData.city,
         checkIn: tripData.checkIn,
         checkOut: tripData.checkOut,
@@ -255,7 +256,8 @@ export default function Activities() {
 
     try {
       // Send message to AI with context
-      const response = await axios.post('/api/activities/chat', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await axios.post(`${API_URL}/api/activities/chat`, {
         message: inputMessage,
         context: {
           destination: tripData.city,

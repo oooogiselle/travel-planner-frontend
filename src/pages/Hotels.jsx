@@ -258,7 +258,8 @@ export default function Hotels() {
         params.amenities = filters.amenities.join(',');
       }
 
-      const response = await axios.get('/api/hotels/search', { params });
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await axios.get(`${API_URL}/api/hotels/search`, { params });
       const list = Array.isArray(response.data?.hotels) ? response.data.hotels : [];
 
       console.log("HOTELS raw count:", list.length);
@@ -321,7 +322,8 @@ export default function Hotels() {
 
       console.log('Searching with params:', params);
 
-      const response = await axios.get('/api/hotels/search', { params });
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await axios.get(`${API_URL}/api/hotels/search`, { params });
       const list = Array.isArray(response.data?.hotels) ? response.data.hotels : [];
 
       console.log(`✓ Found ${list.length} hotels`);

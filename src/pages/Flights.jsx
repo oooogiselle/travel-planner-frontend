@@ -64,7 +64,8 @@ export default function Flights() {
       let destinationCode = '';
 
       try {
-        const response = await axios.get('http://localhost:3001/api/flights/airports', {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+        const response = await axios.get(`${API_URL}/api/flights/airports`, {
           params: { keyword: tripData.city },
         });
 
@@ -145,7 +146,8 @@ export default function Flights() {
 
       if (flightType === 'oneway') {
         // One-way flight
-        response = await axios.get('http://localhost:3001/api/flights/search', {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+        const response = await axios.get(`${API_URL}/api/flights/search`, {
           params: {
             origin: params.origin,
             destination: params.destination,
@@ -193,7 +195,8 @@ export default function Flights() {
         response = { data: { flights: combined } };
       } else {
         // Round-trip (default)
-        response = await axios.get('http://localhost:3001/api/flights/search', {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+        response = await axios.get(`${API_URL}/api/flights/search`, {
           params: {
             origin: params.origin,
             destination: params.destination,
