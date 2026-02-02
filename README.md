@@ -1,6 +1,6 @@
 # Travel Planner Application
 
-A full-stack travel planning application with AI-powered itinerary generation, flight and hotel search, and trip management features.
+A  travel planning application with itinerary generation, flight and hotel search, and trip management features.
 
 ## Architecture
 
@@ -18,7 +18,6 @@ A full-stack travel planning application with AI-powered itinerary generation, f
 - **Framework:** Express.js
 - **AI:** Google Gemini (gemini-2.5-flash)
 - **APIs:** Amadeus (Flights), Foursquare (Hotels), OpenCage (Geocoding)
-- **Caching:** node-cache
 - **CORS:** cors middleware
 - **Deployment:** Render
 
