@@ -2,6 +2,9 @@
 
 A  travel planning application with itinerary generation, flight and hotel search, and trip management features.
 
+## Deployed Link
+- https://travel-planner-backend-gfzj.onrender.com
+
 ## Architecture
 
 ### Frontend
@@ -23,7 +26,7 @@ A  travel planning application with itinerary generation, flight and hotel searc
 
 ## Features
 
-### 1. AI-Powered Trip Planning
+### 1. AI Trip Planning
 - Natural language trip query parsing
 - Destination, dates, travelers, and budget extraction
 - Intelligent defaults for missing information
@@ -89,30 +92,11 @@ travel-planner-frontend/
 └── package.json
 ```
 
-### Backend Structure
-```
-travel-planner-backend/
-├── routes/
-│   ├── activities.js            # Itinerary generation & chat
-│   ├── parse-trip.js            # AI trip query parser
-│   ├── flights.js               # Flight search via Amadeus
-│   ├── hotels.js                # Hotel search via Foursquare
-│   ├── geocode.js               # Geocoding via OpenCage
-│   ├── places.js                # Places search
-│   └── itinerary.js             # Itinerary helpers
-├── middleware/
-│   ├── errorHandler.js          # Global error handler
-│   └── requestLogger.js         # Request logging
-├── server.js                    # Express server setup
-├── .env                         # Environment variables
-└── package.json
-```
-
 ## Installation
 
 ### Prerequisites
 - Node.js (v16 or higher)
-- npm or yarn
+- npm
 - Firebase account
 - Google Gemini API key
 - Amadeus API credentials
@@ -474,23 +458,9 @@ NODE_ENV=production npm start
 
 ## Future Enhancements
 
-### Planned Features
-- Share trips with friends
-- Collaborative trip planning
-- Trip status tracking (planning, booked, completed)
-- Add notes to activities
-- Upload photos to trips
-- Export trips to PDF
-- Budget breakdown by category
-- Weather information integration
-- Currency conversion
-- Multi-language support
-
 ### Technical Improvements
 - Implement caching for Firebase reads
-- Add pagination to Dashboard
-- Optimize bundle size
-- Add service worker for offline support
+- Implement production Amadeus for Hotel Search
 - Implement optimistic UI updates
 - Add comprehensive error boundaries
 - Implement retry logic for failed API calls
