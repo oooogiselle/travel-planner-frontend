@@ -4,6 +4,7 @@ A  travel planning application with itinerary generation, flight and hotel searc
 
 ## Deployed Link
 - https://travel-planner-backend-gfzj.onrender.com
+- https://travel-planner-frontend-dkz1.onrender.com/
 
 ## Architecture
 
