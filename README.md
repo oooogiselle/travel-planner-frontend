@@ -2,6 +2,8 @@
 
 A  travel planning application with itinerary generation, flight and hotel search, and trip management features.
 
+![TripPlan home page: plan a trip by describing it](docs/screenshot.jpg)
+
 ## Deployed Link
 - https://travel-planner-backend-gfzj.onrender.com
 - https://travel-planner-frontend-dkz1.onrender.com/
